@@ -1,0 +1,46 @@
+<html>
+
+<head>Caos - Fogo no parquinho</head>
+
+<body>
+    <h1>Inserir dados de sensor</h1>
+    <input id="sensorName" value="Potato factory 1" type="text" name="sensorName" placeholder="Nome sensor">
+    <input id="altitude" value="-19.8707214" type="number" name="altitude" placeholder="Altitude">
+    <input id="latitude" value="-47.4327918" type="number" name="latitude" placeholder="Latitude">
+    <button onclick="salvaSensor()"> Salvar Sensor</button>
+</body>
+<script>
+    function salvaSensor() {
+        let sensorName = document.getElementById("sensorName").value
+        let altitude = document.getElementById("altitude").value
+        let latitude = document.getElementById("latitude").value
+
+        fetch("http://localhost:8080/v1/events",
+            {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "sensorName": sensorName,
+                    "cordinates": [latitude, altitude]
+                })
+            })
+            .then(res => {
+                console.log(res.json())
+
+                console.log("Parabens vitor hugo vc nao venceu mexendo com js")
+                //window.location.url = "/listagem"
+                alert(`Sensor criado ${res.id}`)
+                
+
+            }).catch(erro => {
+                console.log("deu rui seu inutil")
+                console.log(erro.json())
+            })
+    }
+
+</script>
+
+</html>

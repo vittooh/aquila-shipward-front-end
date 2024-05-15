@@ -1,0 +1,48 @@
+<html>
+
+<head>Caos - Fogo no parquinho</head>
+
+<body>
+    <h1>Inserir dados de sensor</h1>
+    <input id="idSensor" value="Potato factory 1" type="text" name="idSensor" placeholder="Id sensor">
+    <table>
+        <thead>Dados Sensor</thead>
+        <tbody>
+            <tr>
+                <th id="name"></th>
+                <td id="coordinates"></th>
+            </tr>
+        </tbody>
+    </table>
+    <button onclick="salvaSensor()"> Salvar Sensor</button>
+</body>
+<script>
+    function salvaSensor() {
+        let name = document.getElementById("name")
+        let coordinates = document.getElementById("coordinates")
+        let idSensor = document.getElementById("idSensor").value
+        
+
+        fetch(`http://localhost:8080/v1/events/${idSensor}`,
+            {
+                method: "GET",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => {
+                let response = res.json()
+                name.value = response.sensorName
+                coordinates.value = response.coordinates
+            }).catch(erro => {
+                console.log("deu ruim seu inutil")
+                console.log(erro.json())
+            })
+    }
+
+</script>
+
+</html>
+
+-6.7573695,18.79,53.4802301
