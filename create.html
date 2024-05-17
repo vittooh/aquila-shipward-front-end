@@ -24,17 +24,15 @@
                 },
                 body: JSON.stringify({
                     "sensorName": sensorName,
-                    "cordinates": [latitude, altitude]
+                    "coordinates": [latitude, altitude]
                 })
             })
+            .then(response => response.json())
             .then(res => {
-                console.log(res.json())
-
+                console.log(res)
                 console.log("Parabens vitor hugo vc nao venceu mexendo com js")
-                //window.location.url = "/listagem"
                 alert(`Sensor criado ${res.id}`)
-                
-
+                window.location = `sensors.html?id=${res.id}`
             }).catch(erro => {
                 console.log("deu rui seu inutil")
                 console.log(erro.json())

@@ -3,25 +3,44 @@
 <head>Caos - Fogo no parquinho</head>
 
 <body>
-    <h1>Inserir dados de sensor</h1>
-    <input id="idSensor" value="Potato factory 1" type="text" name="idSensor" placeholder="Id sensor">
-    <table>
-        <thead>Dados Sensor</thead>
-        <tbody>
-            <tr>
-                <th id="name"></th>
-                <td id="coordinates"></th>
-            </tr>
-        </tbody>
-    </table>
-    <button onclick="salvaSensor()"> Salvar Sensor</button>
+    <h1>Recuperar dados sensor</h1>
+    <input id="idSensor" value="663a59715b39794be053145d" type="text" name="idSensor" placeholder="Id sensor">
+    <button onclick="recuperaSensorEventoId()"> Recupera sensor</button>
+    <div>
+        <table id="sensorDados">
+            <thead>Dados Sensor</thead>
+            <tbody>
+                <tr>
+                    <th id="nameView"></th>
+                    <td id="coordinatesView">
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
 </body>
 <script>
-    function salvaSensor() {
-        let name = document.getElementById("name")
-        let coordinates = document.getElementById("coordinates")
+
+    window.addEventListener("load", function (event) {
+        console.log("Todos os recursos terminaram o carregamento!");
+        renderizaIdSeInformado()
+    });
+
+    function renderizaIdSeInformado() {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('id');
+        if (id !== null && id.trim().length != 0) {
+            console.log(`id is ${id}`)
+            document.getElementById("idSensor").value = id
+            recuperaSensorEventoId()
+        }
+    }
+
+    function recuperaSensorEventoId() {
+        let name = document.getElementById("nameView")
+        let coordinates = document.getElementById("coordinatesView")
         let idSensor = document.getElementById("idSensor").value
-        
+
 
         fetch(`http://localhost:8080/v1/events/${idSensor}`,
             {
@@ -31,18 +50,26 @@
                     'Content-Type': 'application/json'
                 }
             })
-            .then(res => {
-                let response = res.json()
+            .then(response => response.json())
+            .then(response => {
+                console.log(response)
                 name.value = response.sensorName
                 coordinates.value = response.coordinates
+                let tr = document.createElement("tr")
+                tr.textContent = response.sensorName
+                let td = document.createElement("td")
+                td.textContent = response.coordinates
+                tableRow = document.createElement("tr")
+                tableRow.appendChild(tr)
+                tableRow.appendChild(td)
+                document.getElementById("sensorDados")
+                    .appendChild(tableRow)
             }).catch(erro => {
                 console.log("deu ruim seu inutil")
-                console.log(erro.json())
+                console.log(erro)
             })
     }
 
 </script>
 
 </html>
-
--6.7573695,18.79,53.4802301

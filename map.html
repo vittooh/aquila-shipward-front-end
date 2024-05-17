@@ -1,0 +1,64 @@
+<html>
+
+<head>
+    Caos - Fogo no parquinho
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+    <style>
+        .map {
+            background-color: #eaeaea;
+        }
+
+        .pin {
+            fill: red;
+            stroke: black;
+            stroke-width: 1px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>iremos codar js, bem vindos ao caos</h1>
+    <button onclick="caos()"> caes do js</button>
+    <input id="startDate" type="datetime-local" name="Data de início">
+    <input id="endDate" type="datetime-local" name="Data de fim">
+
+    <svg class="map" width="960" height="600"></svg>
+    <script src="script.js"></script>
+</body>
+<script>
+
+    async function caos() {
+        let dados = await recuperaDados()
+        console.log("Thedigitalbricklayer is going to kill demons with the hammer of knowlodge")
+
+        build(dados)
+    }
+
+    async function recuperaDados() {
+        let start = document.getElementById("startDate").value
+        let end = document.getElementById("endDate").value
+        return fetch("http://localhost:8080/v1/events/query",
+            {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "startDate": start,
+                    "endDate": end
+                })
+            })
+            .then(response => response.json())
+            .then(res => {
+                console.log(res)
+                return res.content
+            }).catch(erro => {
+                console.log("deu rui seu inutil")
+                console.log(erro.json())
+            })
+    }
+</script>
+
+</html>
